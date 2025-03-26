@@ -9,8 +9,8 @@ from panda.tests.libpanda import libpanda_py
 import panda.tests.safety.common as common
 from panda.tests.safety.common import CANPackerPanda
 
-TOYOTA_COMMON_TX_MSGS = [[0x2E4, 0], [0x191, 0], [0x412, 0], [0x343, 0], [0x1D2, 0]]  # LKAS + LTA + ACC & PCM cancel cmds
-TOYOTA_SECOC_TX_MSGS = [[0x131, 0], [0x183, 0], [0x411, 0]] + TOYOTA_COMMON_TX_MSGS
+TOYOTA_COMMON_TX_MSGS = [[0x2E4, 2], [0x191, 1], [0x412, 2], [0x343, 2], [0x1D3, 0]]  # LKAS + LTA + ACC & PCM cancel cmds
+TOYOTA_SECOC_TX_MSGS = [[0x191, 1], [0x183, 1], [0x411, 2]] + TOYOTA_COMMON_TX_MSGS
 TOYOTA_COMMON_LONG_TX_MSGS = [[0x283, 0], [0x2E6, 0], [0x2E7, 0], [0x33E, 0], [0x344, 0], [0x365, 0], [0x366, 0], [0x4CB, 0],  # DSU bus 0
                               [0x128, 1], [0x141, 1], [0x160, 1], [0x161, 1], [0x470, 1],  # DSU bus 1
                               [0x411, 0],  # PCS_HUD
@@ -329,7 +329,7 @@ class TestToyotaSecOcSafety(TestToyotaSafetyBase):
 
   TX_MSGS = TOYOTA_SECOC_TX_MSGS
   RELAY_MALFUNCTION_ADDRS = {0: (0x2E4, 0x343, 0x183)}
-  FWD_BLACKLISTED_ADDRS = {2: [0x2E4, 0x412, 0x191, 0x131, 0x343, 0x183]}
+  FWD_BLACKLISTED_ADDRS = {2: [0x2E4, 0x412, 0x191, 0x191, 0x343, 0x183]}
 
   def setUp(self):
     self.packer = CANPackerPanda("toyota_secoc_pt_generated")
@@ -352,7 +352,7 @@ class TestToyotaSecOcSafety(TestToyotaSafetyBase):
 
   def _lta_2_msg(self, req, req2, angle_cmd, torque_wind_down=100):
     values = {"STEER_REQUEST": req, "STEER_REQUEST_2": req2, "STEER_ANGLE_CMD": angle_cmd}
-    return self.packer.make_can_msg_panda("STEERING_LTA_2", 0, values)
+    return self.packer.make_can_msg_panda("STEERING_LTA", 0, values)
 
   def test_lta_2_steer_cmd(self):
     for engaged, req, req2, angle in itertools.product([True, False], [0, 1], [0, 1], np.linspace(-20, 20, 5)):
