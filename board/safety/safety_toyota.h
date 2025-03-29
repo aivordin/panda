@@ -4,7 +4,7 @@
 
 // Stock longitudinal
 #define TOYOTA_BASE_TX_MSGS \
-  {0x191, 0, 8}, {0x412, 0, 8}, {0x343, 0, 8}, {0x1D2, 0, 8},  /* LKAS + LTA + ACC & PCM cancel cmds */  \
+  {0x191, 0, 8}, {0x412, 0, 8}, {0x343, 2, 8}, {0x1D2, 0, 8},  /* LKAS + LTA + ACC & PCM cancel cmds */  \
 
 #define TOYOTA_COMMON_TX_MSGS \
   TOYOTA_BASE_TX_MSGS \
